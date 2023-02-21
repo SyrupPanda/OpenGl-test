@@ -20,4 +20,18 @@ namespace GLUTCallbacks
 			helloGL->Display();
 		}
 	}
+	void Timer(int preferredRefresh)
+	{
+		if (helloGL != nullptr)
+		{
+			int updateTime = glutGet(GLUT_ELAPSED_TIME);
+			helloGL->Update();
+			updateTime = glutGet(GLUT_ELAPSED_TIME) - updateTime;;
+			glutTimerFunc(preferredRefresh - updateTime, GLUTCallbacks::Timer, preferredRefresh);
+		}
+	}
+	void Keyboard()
+	{
+		//helloGL->Keyboard(key,x,y)
+	}
 }
