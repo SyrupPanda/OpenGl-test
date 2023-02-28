@@ -30,8 +30,8 @@ namespace GLUTCallbacks
 			glutTimerFunc(preferredRefresh - updateTime, GLUTCallbacks::Timer, preferredRefresh);
 		}
 	}
-	void Keyboard()
+	void Keyboard(unsigned char key, int x, int y)
 	{
-		//helloGL->Keyboard(key,x,y)
+		helloGL->Keyboard(key, x, y);
 	}
 }

@@ -2,15 +2,21 @@
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
+	rotation = 0.0f;
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
-	rotation = 0.0f;
 	glutCreateWindow("Simple OpenGL Program");
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
+	glutKeyboardFunc(GLUTCallbacks::Keyboard);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, 800, 800);
+	gluPerspective(45, 1, 0, 1000);
+	glMatrixMode(GL_MODELVIEW);
 	glutMainLoop();
 }
 
@@ -25,10 +31,12 @@ void HelloGL::Display()
 
 void HelloGL::Update()
 {
+	glLoadIdentity();
 	glutPostRedisplay();
-	rotation += 0.5f;
-	if (rotation >= 360.0f)
+	if (rotation > 360.0f)
 		rotation = 0.0f;
+	if (rotation < 0.0f)
+		rotation = 360.0f;
 	Sleep(10);
 }
 
@@ -72,4 +80,12 @@ void HelloGL::DrawTriangle()
 HelloGL::~HelloGL(void)
 {
 
+}
+
+void HelloGL::Keyboard(unsigned char key, int x, int y)
+{
+	if (key == 'd')
+		rotation += 0.5f;
+	if (key == 'a')
+		rotation -= 0.5f;
 }
