@@ -3,6 +3,10 @@
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	rotation = 0.0f;
+	camera = new Camera();
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE);
@@ -23,8 +27,9 @@ HelloGL::HelloGL(int argc, char* argv[])
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	HelloGL::DrawPolygon();
-	HelloGL::DrawTriangle();
+	DrawWire();
+	DrawPolygon();
+	DrawTriangle();
 	glutSwapBuffers();
 	glFlush();
 }
@@ -32,17 +37,19 @@ void HelloGL::Display()
 void HelloGL::Update()
 {
 	glLoadIdentity();
+	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 	glutPostRedisplay();
+	glLoadIdentity();
 	if (rotation > 360.0f)
 		rotation = 0.0f;
 	if (rotation < 0.0f)
 		rotation = 360.0f;
-	Sleep(10);
 }
 
 void HelloGL::DrawPolygon()
 {
 	glPushMatrix();
+	glTranslatef(0.0f, 0.0f, -5.5f);
 	glRotatef(rotation, 1.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -64,6 +71,7 @@ void HelloGL::DrawPolygon()
 void HelloGL::DrawTriangle()
 {
 	glPushMatrix();
+	glTranslatef(0.0f, 0.0f, -5.5f);
 	glRotatef(rotation, 1.0f, 0.0f, 1.0f);
 
 	glBegin(GL_POLYGON);
@@ -77,9 +85,21 @@ void HelloGL::DrawTriangle()
 	glFlush();
 }
 
+void HelloGL::DrawWire()
+{
+	glPushMatrix();
+	glRotatef(rotation, 1.0f, 0.0f, -0.5f);
+	glTranslatef(0.0f, 0.0f, -0.5f);
+
+	glutWireCube(0.1f);
+
+	glPopMatrix();
+	glFlush();
+}
+
 HelloGL::~HelloGL(void)
 {
-
+	delete camera;
 }
 
 void HelloGL::Keyboard(unsigned char key, int x, int y)
@@ -88,4 +108,16 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 		rotation += 0.5f;
 	if (key == 'a')
 		rotation -= 0.5f;
+	if (key == 'j')
+		camera->eye.x -= 0.5f;
+	if (key == 'l')
+		camera->eye.x += 0.5f;
+	if (key == 'k')
+		camera->eye.y -= 0.5f;
+	if (key == 'i')
+		camera->eye.y += 0.5f;
+	if (key == 'u')
+		camera->eye.z -= 0.5f;
+	if (key == 'o')
+		camera->eye.z += 0.5f;
 }
