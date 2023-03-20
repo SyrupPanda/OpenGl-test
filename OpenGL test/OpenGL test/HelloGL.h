@@ -35,6 +35,7 @@ public:
 	void DrawPolygon();
 	void DrawTriangle();
 	void DrawWire();
+	void DrawCube();
 
 	void Update();
 
