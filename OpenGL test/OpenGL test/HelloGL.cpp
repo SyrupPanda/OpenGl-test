@@ -1,5 +1,64 @@
 #include "HelloGL.h"
 
+Vertex HelloGL::vertices[] = { 
+1,1,1,  -1,1,1,  -1,-1,1, 
+-1,-1,1,  1,-1,1,  1,1,1, 
+
+1,1,1,  1,-1,1,  1,-1,-1, 
+1,-1,-1,  1,1,-1,  1,1,1, 
+
+1,1,1,  1,1,-1,  -1,1,-1,
+-1,1,-1,  -1,1,1,  1,1,1, 
+
+-1,1,1,  -1,1,-1,  -1,-1,-1, 
+-1,-1,-1,  -1,-1,1,  -1,1,1, 
+
+-1,-1,-1,  1,-1,-1,  1,-1,1, 
+1,-1,1,  -1,-1,1,  -1,-1,-1, 
+
+1,-1,-1,  -1,-1,-1,  -1,1,-1, 
+-1,1,-1,  1,1,-1,  1,-1,-1, };
+
+Color HelloGL::colors[] = {
+1, 1, 1,  1, 1, 0,  1, 0, 0,
+1, 0, 0,  1, 0, 1,  1, 1, 1,
+
+1, 1, 1,  1, 0, 1,  0, 0, 1,
+0, 0, 1,  0, 1, 1,  1, 1, 1,
+
+1, 1, 1,  0, 1, 1,  0, 1, 0,
+0, 1, 0,  1, 1, 0,  1, 1, 1,
+
+1, 1, 0,  0, 1, 0,  0, 0, 0,
+0, 0, 0,  1, 0, 0,  1, 1, 0,
+
+0, 0, 0,  0, 0, 1,  1, 0, 1,
+1, 0, 1,  1, 0, 0,  0, 0, 0,
+
+0, 0, 1,  0, 0, 0,  0, 1, 0,
+0, 1, 0,  0, 1, 1,  0, 0, 1};
+
+Vertex HelloGL::indexedVertices[] =
+{ 1, 1, 1,  -1, 1, 1,
+-1, -1, 1,  1, -1, 1,
+1, -1, -1,  1, 1, -1,
+-1, 1, -1,  -1, -1, -1};
+
+Color HelloGL::indexedColors[] = {
+1, 1, 1,  1, 1, 0,
+1, 0, 0,  1, 0, 1,
+0, 0, 1,  0, 1, 1,
+0, 1, 0,  0, 0, 0
+};
+
+GLushort HelloGL::indices[] = {
+0, 1, 2,  2, 3, 0,
+0, 3, 4,  4, 5, 0,
+0, 5, 6,  6, 1, 0,
+1, 6, 7,  7, 2, 1,
+7, 4, 3,  3, 2, 7,
+4, 7, 6,  6, 5, 4};
+
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	rotation = 0.0f;
@@ -29,8 +88,8 @@ HelloGL::HelloGL(int argc, char* argv[])
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	DrawCube();
 	glutSwapBuffers();
+	DrawIndexedCube();
 	glFlush();
 }
 
@@ -55,8 +114,10 @@ void HelloGL::DrawPolygon()
 
 	glBegin(GL_POLYGON);
 	{
-		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-		glVertex2f(-0.5, 0.5);
+		glColor4f(1.0f, 0.0f, 0.0f, 0
+
+
+
 		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
 		glVertex2f(0.5, 0.5);
 		glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
@@ -100,6 +161,9 @@ void HelloGL::DrawWire()
 
 void HelloGL::DrawCube()
 {
+	glPushMatrix();
+	glRotatef(rotation, 1.0f, 0.0f, -0.5f);
+
 	glBegin(GL_TRIANGLES);
 	//1
 	glColor3f(1, 1, 1);
@@ -187,6 +251,71 @@ void HelloGL::DrawCube()
 	glVertex3f(1, -1, -1);
 
 	glEnd();
+
+	glPopMatrix();
+	glFlush();
+}
+
+void HelloGL::DrawCubeArray()
+{
+	glPushMatrix();
+
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < 36; i++)
+	{
+		/*glColor3f(colors[i].r, colors[i].g, colors[i].b);
+		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);*/
+		glColor3fv(&colors[i].r);
+		glVertex3fv(&vertices[i].x);
+	}
+	glEnd();
+
+	glPopMatrix();
+}
+
+void HelloGL::DrawIndexedCube()
+{
+	glPushMatrix();
+
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < 36; i++)
+	{
+		glColor3fv(&indexedColors[indices[i]].r);
+		glVertex3fv(&indexedVertices[indices[i]].x);
+	}
+	glEnd();
+
+	glPopMatrix();
+}
+
+void HelloGL::DrawCubeArrayAlt()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glColorPointer(3, GL_FLOAT, 0, colors);
+
+	glPushMatrix();
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glPopMatrix();
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void HelloGL::DrawIndexedCubeAlt()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, indexedVertices);
+	glColorPointer(3, GL_FLOAT, 0, indexedColors);
+
+	glPushMatrix();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, indices);
+	glPopMatrix();
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 HelloGL::~HelloGL(void)
@@ -196,10 +325,11 @@ HelloGL::~HelloGL(void)
 
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
-	if (key == 'd')
+	if (key == 'x')
 		rotation += 0.5f;
-	if (key == 'a')
+	if (key == 'z')
 		rotation -= 0.5f;
+
 	if (key == 'j')
 		camera->eye.x -= 0.5f;
 	if (key == 'l')
@@ -212,4 +342,30 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 		camera->eye.z -= 0.5f;
 	if (key == 'o')
 		camera->eye.z += 0.5f;
+
+	if (key == 'f')
+		camera->center.x -= 0.5f;
+	if (key == 'h')
+		camera->center.x += 0.5f;
+	if (key == 'g')
+		camera->center.y -= 0.5f;
+	if (key == 't')
+		camera->center.y += 0.5f;
+	if (key == 'r')
+		camera->center.z -= 0.5f;
+	if (key == 'y')
+		camera->center.z += 0.5f;
+
+	if (key == 'a')
+		camera->up.x -= 0.5f;
+	if (key == 'd')
+		camera->up.x += 0.5f;
+	if (key == 's')
+		camera->up.y -= 0.5f;
+	if (key == 'w')
+		camera->up.y += 0.5f;
+	if (key == 'q')
+		camera->up.z -= 0.5f;
+	if (key == 'e')
+		camera->up.z += 0.5f;
 }
