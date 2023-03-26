@@ -114,10 +114,8 @@ void HelloGL::DrawPolygon()
 
 	glBegin(GL_POLYGON);
 	{
-		glColor4f(1.0f, 0.0f, 0.0f, 0
-
-
-
+		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+		glVertex2f(-0.5, 0.5);
 		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
 		glVertex2f(0.5, 0.5);
 		glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
