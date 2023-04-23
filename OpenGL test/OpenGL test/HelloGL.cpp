@@ -1,17 +1,22 @@
 #include "HelloGL.h"
+#include "MeshLoader.h"
 
-HelloGL::HelloGL(int argc, char* argv[])
+void HelloGL::InitObjects()
 {
 	camera = new Camera();
 	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 	GLUTCallbacks::Init(this);
+	Mesh* cubeMesh = MeshLoader::Load((char*)"Objects/cube.txt");
 	for (int i = 0; i < 200; i++)
 	{
-		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		cube[i] = new Cube(cubeMesh,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
-	Cube::Load((char*)"Objects/cube.txt");
+}
+
+void HelloGL::InitGL(int argc, char* argv[])
+{
 	glutInit(&argc, argv);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
@@ -32,6 +37,13 @@ HelloGL::HelloGL(int argc, char* argv[])
 	gluPerspective(45, 1, 0.1, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glutMainLoop();
+}
+
+HelloGL::HelloGL(int argc, char* argv[])
+{
+	InitObjects();
+	InitGL(argc, argv);
+	
 }
 
 void HelloGL::Display()
