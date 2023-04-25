@@ -4,8 +4,9 @@
 #include <gl/GLU.h>
 #include"GL\freeglut.h"
 #include "Structure.h"
+#include "SceneObject.h"
 
-class Objects
+class Objects : public SceneObject
 {
 private:
 	GLfloat rotation;
@@ -15,7 +16,7 @@ private:
 	Mesh* mesh;
 
 public:
-	Objects(Mesh* cMesh,float x, float y, float z);
+	Objects(Mesh* oMesh,float x, float y, float z);
 	~Objects();
 
 	void Draw();

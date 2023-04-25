@@ -2,13 +2,12 @@
 #include <iostream>
 #include <fstream>
 
-Objects::Objects(Mesh* cMesh, float x, float y, float z)
+Objects::Objects(Mesh* mesh, float x, float y, float z) : SceneObject(mesh)
 {
 	rotation = 0.0f;
 	position.x = x;
 	position.y = y;
 	position.z = z;
-	mesh = cMesh;
 }
 
 Objects::~Objects()

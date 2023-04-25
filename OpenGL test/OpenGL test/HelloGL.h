@@ -6,6 +6,9 @@
 #include "GLUTCallBacks.h"
 #include "Structure.h"
 #include "Objects.h"
+#include "SceneObject.h"
+#include "Pyramid.h"
+#include "Cube.h"
 #define REFRESHRATE 16
 
 class HelloGL
@@ -31,6 +34,10 @@ private:
 
 	Camera* camera;
 
-	Objects* objects[200];
+	SceneObject* objects[1000];
+
+	Cube* cube[500];
+
+	Pyramid* pyramid[500];
 };
 
