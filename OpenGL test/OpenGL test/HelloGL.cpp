@@ -11,7 +11,7 @@ void HelloGL::InitObjects()
 	Mesh* cubeMesh = MeshLoader::Load((char*)"Objects/cube.txt");
 	for (int i = 0; i < 200; i++)
 	{
-		cube[i] = new Cube(cubeMesh,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		objects[i] = new Objects(cubeMesh,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
 }
 
@@ -51,7 +51,7 @@ void HelloGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	for (int i = 0; i < 200; i++)
 	{
-		cube[i]->Draw();
+		objects[i]->Draw();
 	}
 	glutSwapBuffers();	glFlush();
 }
@@ -64,7 +64,7 @@ void HelloGL::Update()
 		camera->up.x, camera->up.y, camera->up.z);
 	for (int i = 0; i < 200; i++)
 	{
-		cube[i]->Update();
+		objects[i]->Update();
 	}
 	glutPostRedisplay();
 }

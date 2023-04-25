@@ -5,7 +5,7 @@
 #include "GL\freeglut.h"
 #include "GLUTCallBacks.h"
 #include "Structure.h"
-#include "Cube.h"
+#include "Objects.h"
 #define REFRESHRATE 16
 
 class HelloGL
@@ -31,6 +31,6 @@ private:
 
 	Camera* camera;
 
-	Cube* cube[200];
+	Objects* objects[200];
 };
 
