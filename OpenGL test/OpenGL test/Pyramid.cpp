@@ -1,6 +1,6 @@
 #include "Pyramid.h"
 
-Pyramid::Pyramid(Mesh* pMesh, float x, float y, float z) : SceneObject(mesh)
+Pyramid::Pyramid(Mesh* pMesh, float x, float y, float z) : SceneObject(pMesh, nullptr)
 {
 	position.x = x;
 	position.y = y;
@@ -24,7 +24,7 @@ void Pyramid::Draw()
 		glColorPointer(3, GL_FLOAT, 0, mesh->Colors);
 
 		glPushMatrix();
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, mesh->Indices);
+		glDrawElements(GL_TRIANGLES, mesh->IndexCount, GL_UNSIGNED_SHORT, mesh->Indices);
 		glPopMatrix();
 		glPopMatrix();
 

@@ -1,5 +1,6 @@
 #include "HelloGL.h"
 #include "MeshLoader.h"
+#include "Texture2D.h"
 
 void HelloGL::InitObjects()
 {
@@ -10,9 +11,12 @@ void HelloGL::InitObjects()
 	GLUTCallbacks::Init(this);
 	Mesh* cubeMesh = MeshLoader::Load((char*)"Objects/cube.txt");
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"Objects/pyramid.txt");
+	Texture2D* texture = new Texture2D();
+	texture->Load((char*)"Texture/penguins.raw", 512, 512);
+
 	for (int i = 0; i < 500; i++)
 	{
-		objects[i] = new Cube(cubeMesh,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		objects[i] = new Cube(cubeMesh, texture,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
 	for (int o = 500; o < 1000; o++)
 	{
@@ -31,9 +35,11 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glEnable(GL_DEPTH_TEST);
+	
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
 	glMatrixMode(GL_PROJECTION);

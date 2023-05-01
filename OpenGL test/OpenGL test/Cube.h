@@ -4,12 +4,10 @@
 class Cube : public SceneObject
 {
 private:
-	Mesh* mesh;
-
 	Vector3 position;
 
 public:
-	Cube(Mesh* oMesh, float x, float y, float z);
+	Cube(Mesh* oMesh, Texture2D* oTexture, float x, float y, float z);
 	~Cube();
 
 

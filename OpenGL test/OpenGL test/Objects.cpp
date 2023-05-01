@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-Objects::Objects(Mesh* mesh, float x, float y, float z) : SceneObject(mesh)
+Objects::Objects(Mesh* mesh, float x, float y, float z) : SceneObject(mesh, nullptr)
 {
 	rotation = 0.0f;
 	position.x = x;
