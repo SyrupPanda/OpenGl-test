@@ -16,7 +16,7 @@ Cube::~Cube()
 
 void Cube::Draw()
 {
-	if (mesh->Vertices != nullptr && mesh->Colors != nullptr && mesh->Indices != nullptr)
+	if (mesh->Vertices != nullptr && mesh->Normal != nullptr && mesh->Indices != nullptr)
 	{
 		glBindTexture(GL_TEXTURE_2D, texture->GetID());
 
@@ -24,9 +24,9 @@ void Cube::Draw()
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
 
-		glVertexPointer(3, GL_FLOAT, 0, mesh->Vertices);
-		glColorPointer(3, GL_FLOAT, 0, mesh->Colors);
 		glTexCoordPointer(2, GL_FLOAT, 0, mesh->TexCoords);
+		glVertexPointer(3, GL_FLOAT, 0, mesh->Vertices);
+		glNormalPointer( GL_FLOAT, 0, mesh->Normal);
 
 		glPushMatrix();
 		glTranslatef(position.x, position.y, position.z);

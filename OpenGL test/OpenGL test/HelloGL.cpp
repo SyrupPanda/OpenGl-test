@@ -2,28 +2,6 @@
 #include "MeshLoader.h"
 #include "Texture2D.h"
 
-void HelloGL::InitObjects()
-{
-	camera = new Camera();
-	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
-	GLUTCallbacks::Init(this);
-	Mesh* cubeMesh = MeshLoader::Load((char*)"Objects/cube.txt");
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"Objects/pyramid.txt");
-	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"Texture/penguins.raw", 512, 512);
-
-	for (int i = 0; i < 500; i++)
-	{
-		objects[i] = new Cube(cubeMesh, texture,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
-	}
-	for (int o = 500; o < 1000; o++)
-	{
-		objects[o] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
-	}
-}
-
 void HelloGL::InitGL(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -35,11 +13,14 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 
+	//glEnable(GL_NORMAL_ARRAY);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	
+
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
 	glMatrixMode(GL_PROJECTION);
@@ -49,11 +30,57 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void HelloGL::InitObjects()
+{
+	camera = new Camera();
+	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+	GLUTCallbacks::Init(this);
+	Mesh* cubeMesh = MeshLoader::Load((char*)"Objects/cube.txt");
+
+	texture = new Texture2D();
+	texture->Load((char*)"Texture/Penguins.raw", 512, 512);
+
+	for (int i = 0; i < 1000; i++)
+	{
+		objects[i] = new Cube(cubeMesh, texture,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+	}
+}
+
+void HelloGL::InitLight()
+{
+	lightPosition = new Vector4();
+
+	lightPosition->x = 0.0f;
+	lightPosition->y = 0.0f;
+	lightPosition->z = 1.0f;
+	lightPosition->w = 0.0f;
+
+	lightData = new Lighting();
+
+	lightData->Ambient.x = 0.2f;
+	lightData->Ambient.y = 0.2f;
+	lightData->Ambient.z = 0.2f;
+	lightData->Ambient.w = 1.0f;
+
+	lightData->Diffuse.x = 0.8f;
+	lightData->Diffuse.y = 0.8f;
+	lightData->Diffuse.z = 0.8f;
+	lightData->Diffuse.w = 1.0f;
+
+	lightData->Specular.x = 0.2f;
+	lightData->Specular.y = 0.2f;
+	lightData->Specular.z = 0.2f;
+	lightData->Specular.w = 1.0f;
+}
+
 HelloGL::HelloGL(int argc, char* argv[])
 {
-	InitObjects();
 	InitGL(argc, argv);
-	
+	InitObjects();
+	InitLight();
+
 	glutMainLoop();
 }
 
@@ -78,6 +105,10 @@ void HelloGL::Update()
 	{
 		objects[i]->Update();
 	}
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->Specular.x));
+	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->Ambient.x));
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->Diffuse.x));
+	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPosition->x));
 	glutPostRedisplay();
 }
 

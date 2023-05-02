@@ -5,9 +5,7 @@
 #include "GL\freeglut.h"
 #include "GLUTCallBacks.h"
 #include "Structure.h"
-#include "Objects.h"
 #include "SceneObject.h"
-#include "Pyramid.h"
 #include "Cube.h"
 #define REFRESHRATE 16
 
@@ -30,6 +28,8 @@ public:
 	void InitObjects();
 	void InitGL(int argc, char* argv[]);
 
+	void InitLight();
+
 private:
 
 	Camera* camera;
@@ -38,6 +38,9 @@ private:
 
 	Cube* cube[500];
 
-	Pyramid* pyramid[500];
+	Texture2D* texture;
+
+	Vector4* lightPosition;
+	Lighting* lightData;
 };
 
