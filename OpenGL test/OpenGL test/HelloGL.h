@@ -36,7 +36,7 @@ private:
 
 	SceneObject* objects[1000];
 
-	Cube* cube[500];
+	Cube* cube[1000];
 
 	Texture2D* texture;
 

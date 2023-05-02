@@ -22,23 +22,46 @@ void Cube::Draw()
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
 
 		glTexCoordPointer(2, GL_FLOAT, 0, mesh->TexCoords);
 		glVertexPointer(3, GL_FLOAT, 0, mesh->Vertices);
 		glNormalPointer( GL_FLOAT, 0, mesh->Normal);
 
+		material = new Material();
+		material->Ambient.x = 0.8f;
+		material->Ambient.y = 0.05f;
+		material->Ambient.z = 0.05f;
+		material->Ambient.w = 1.0f;
+
+		material->Diffuse.x = 0.8f;
+		material->Diffuse.y = 0.05f;
+		material->Diffuse.z = 0.05f;
+		material->Diffuse.w = 1.0f;
+
+		material->Specular.x = 1.0f;
+		material->Specular.y = 1.0f;
+		material->Specular.z = 1.0f;
+		material->Specular.w = 1.0f;
+
+		material->Shininess = 100.0f;
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, &(material->Ambient.x));
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, &(material->Diffuse.x));
+		glMaterialfv(GL_FRONT, GL_SPECULAR, &(material->Specular.x));
+		glMaterialf(GL_FRONT, GL_SHININESS, material->Shininess);
+
 		glPushMatrix();
 		glTranslatef(position.x, position.y, position.z);
 	
-		glPushMatrix();
+		//glPushMatrix();
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, mesh->Indices);
-		glPopMatrix();
+		//glPopMatrix();
 		glPopMatrix();
 
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
 		
 	}
 }
