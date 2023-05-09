@@ -1,6 +1,2 @@
-﻿  Cube.cpp
-  GLUTCallbacks.cpp
-  HelloGL.cpp
-  Main.cpp
-  Generating Code...
+﻿  HelloGL.cpp
   OpenGL test.vcxproj -> C:\Users\d014194m\Documents\GitHub\OpenGl-test\OpenGL test\Debug\OpenGL test.exe

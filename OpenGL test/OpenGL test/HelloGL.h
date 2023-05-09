@@ -30,6 +30,8 @@ public:
 
 	void InitLight();
 
+	void DrawString(const char* text, Vector3* position, Color* color);
+
 private:
 
 	Camera* camera;

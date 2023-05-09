@@ -72,8 +72,10 @@ void HelloGL::InitLight()
 	lightData->Specular.x = 0.2f;
 	lightData->Specular.y = 0.2f;
 	lightData->Specular.z = 0.2f;
-	lightData->Specular.w = 1.0f;
+	lightData->Specular.w = 1.0f ;
 }
+
+
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -86,11 +88,14 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 void HelloGL::Display()
 {
+	Vector3 v = { -1.4f, 0.7f, -1.0f };
+	Color c = { 0.0f, 1.0f, 0.0f };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	for (int i = 0; i < 1000; i++)
 	{
 		objects[i]->Draw();
 	}
+	DrawString("Hello World",  &v, &c);
 	glutSwapBuffers();	
 	glFlush();
 }
@@ -157,4 +162,11 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 		camera->up.z -= 0.5f;
 	if (key == 'e')
 		camera->up.z += 0.5f;
+}
+
+void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
+{
+	glTranslatef(position->x, position->y, position->z);
+	glRasterPos2f(0.0f, 0.0f);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 }
