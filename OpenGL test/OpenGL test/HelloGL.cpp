@@ -1,6 +1,8 @@
 #include "HelloGL.h"
 #include "MeshLoader.h"
 #include "Texture2D.h"
+#include <string>
+#include <stdio.h>
 
 void HelloGL::InitGL(int argc, char* argv[])
 {
@@ -46,6 +48,8 @@ void HelloGL::InitObjects()
 	{
 		objects[i] = new Cube(cubeMesh, texture,((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
+
+	time = 0.0f;
 }
 
 void HelloGL::InitLight()
@@ -95,7 +99,9 @@ void HelloGL::Display()
 	{
 		objects[i]->Draw();
 	}
-	DrawString("Hello World",  &v, &c);
+	char cTime[20];
+	sprintf_s(cTime, "%f", time);
+	DrawString(cTime, &v, &c);
 	glutSwapBuffers();	
 	glFlush();
 }
@@ -106,15 +112,17 @@ void HelloGL::Update()
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
 		camera->center.x, camera->center.y, camera->center.z,
 		camera->up.x, camera->up.y, camera->up.z);
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		objects[i]->Update();
 	}
+	time += glutGet(GLUT_ELAPSED_TIME);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(lightData->Specular.x));
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(lightData->Ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(lightData->Diffuse.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(lightPosition->x));
 	glutPostRedisplay();
+	
 }
 
 HelloGL::~HelloGL(void)

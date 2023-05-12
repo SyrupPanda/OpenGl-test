@@ -44,5 +44,7 @@ private:
 
 	Vector4* lightPosition;
 	Lighting* lightData;
+
+	float time;
 };
 

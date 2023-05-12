@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include <iostream>
 
 Cube::Cube(Mesh* cMesh, Texture2D* cTexture, float x, float y, float z) : SceneObject(cMesh, cTexture)
 {
@@ -8,6 +9,8 @@ Cube::Cube(Mesh* cMesh, Texture2D* cTexture, float x, float y, float z) : SceneO
 
 	mesh = cMesh;
 	texture = cTexture;
+
+	rotation = 10;
 }
 
 Cube::~Cube()
@@ -53,6 +56,7 @@ void Cube::Draw()
 
 		glPushMatrix();
 		glTranslatef(position.x, position.y, position.z);
+		glRotatef(rotation, 1.0f, 0.0f, 0.0f);
 	
 		//glPushMatrix();
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, mesh->Indices);
@@ -68,4 +72,8 @@ void Cube::Draw()
 
 void Cube::Update()
 {
+	rotation += 0.5;
+	if (rotation > 360)
+		rotation = 0.0f;
+	std::cout << rotation << std::endl;
 }
